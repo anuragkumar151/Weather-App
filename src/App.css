@@ -5,10 +5,10 @@ body {
   padding: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: center; /* Center the app vertically */
   min-height: 100vh;
   color: white;
-  overflow: auto; /* Make the entire body scrollable */
+  overflow-x: hidden; /* Prevent horizontal scrolling */
 }
 
 .app {
@@ -24,7 +24,7 @@ body {
   flex-direction: column;
   justify-content: flex-start;
   gap: 15px;
-  overflow-y: auto; /* Enable vertical scrolling if content overflows */
+  overflow-y: auto;
   margin: 0 10px;
   box-sizing: border-box;
 }
@@ -194,22 +194,25 @@ body {
   max-width: 800px;
   gap: 20px;
   padding-bottom: 30px;
+  margin: 2px 2px;
   box-sizing: border-box;
 }
 
 @media (max-width: 600px) {
   .app {
-    max-width: 95%;
+    max-width: 100%;
     padding: 15px;
   }
 
   .app-title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
   }
 
   .search-container input {
     width: 180px;
     font-size: 0.9rem;
+    padding: 10px;
   }
 
   .search-container button {
@@ -218,6 +221,37 @@ body {
   }
 
   .weather-main {
-    font-size: 1.8rem;
+    font-size: 1.4rem;
+  }
+
+  .forecast {
+    flex-direction: column;
+  }
+
+  .forecast-day {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+
+  .recommendation-card {
+    padding: 10px;
+  }
+
+  .forecast-container h2 {
+    font-size: 0.8rem;
+  }
+
+  .weather-main img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .today-temp {
+    font-size: 0.7rem;
+  }
+
+  .weather-info {
+    margin-top: 10px;
   }
 }
