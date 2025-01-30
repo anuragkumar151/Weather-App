@@ -1,0 +1,210 @@
+/* General Styles */
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  background: linear-gradient(145deg, #ff7e5f, #feb47b); /* Elegant warm gradient */
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Make sure it occupies the full height */
+  color: white;
+  overflow: hidden; /* Prevent scrolling on body */
+}
+
+/* App Container */
+.app {
+  text-align: center;
+  width: 100%; /* Take up the full width */
+  max-width: 1000px; /* Set a max-width to avoid being too wide */
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(20px);
+  padding: 30px;
+  border-radius: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Start content from the top */
+  gap: 20px;
+  min-height: auto; /* Ensure it adjusts to content */
+  overflow-y: auto; /* Allow vertical scrolling within the container */
+  padding-bottom: 50px; /* Add space at the bottom */
+}
+
+/* Title */
+.app-title {
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Search Bar */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.search-container input {
+  padding: 14px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 40px;
+  outline: none;
+  background: #ffffff;
+  color: #333;
+  width: 250px;
+  transition: 0.3s;
+}
+
+.search-container input:focus {
+  border: 2px solid #ff7e5f;
+}
+
+.search-container button {
+  padding: 14px 22px;
+  font-size: 1.2rem;
+  background: #ff7e5f;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  color: white;
+  margin-left: 10px;
+  transition: background 0.3s ease;
+}
+
+.search-container button:hover {
+  background: #feb47b;
+}
+
+/* Error Message */
+.error {
+  color: #f44336;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+/* Weather Info */
+.weather-info {
+  margin-top: 15px;
+}
+
+.city-name {
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.weather-main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 2.4rem;
+  font-weight: bold;
+}
+
+.weather-main img {
+  width: 75px;
+  height: 75px;
+}
+
+.weather-description {
+  text-transform: capitalize;
+  font-size: 1.3rem;
+  margin: 15px 0;
+}
+
+.weather-details a {
+  margin: 10px 0;
+  margin-right: 15px;
+  font-size: 1.3rem;
+}
+
+/* Today's Min and Max Temperature Display */
+.today-temp {
+  margin-top: 15px;
+  font-size: 1.3rem;
+}
+
+/* 5-Day Forecast */
+.forecast-container {
+  margin-top: 20px;
+}
+
+.forecast-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.forecast {
+  display: flex;
+  justify-content: space-around;
+  gap: 20px;
+  flex-wrap: nowrap;
+}
+
+.forecast-day {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(15px);
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  width: 100px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.forecast-day:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.forecast-date {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.forecast-day p {
+  font-size: 1.2rem;
+}
+
+/* Recommendations */
+.recommendation {
+  margin-top: 30px; /* Increased top margin for spacing */
+}
+
+.recommendation-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recommendation-card p {
+  font-size: 1.6rem;
+  font-style: italic;
+  color: rgb(0, 0, 0);
+  text-align: center;
+}
+
+/* Ensure content fits properly */
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 900px; /* Prevents too wide on large screens */
+  gap: 20px;
+  min-height: 90vh;
+  padding-bottom: 50px; /* Adds space at the bottom */
+}
+
