@@ -10,38 +10,26 @@ function App() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getUserLocation();
-  }, []);
-
-  const getUserLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          fetchWeatherByCoords(latitude, longitude);
-        },
-        () => {
-          setError("Location access denied. Please enter city manually.");
-        }
+        (position) => fetchWeatherByCoords(position.coords.latitude, position.coords.longitude),
+        () => setError("Location access denied. Please enter city manually.")
       );
     } else {
       setError("Geolocation is not supported by this browser.");
     }
-  };
+  }, []);
 
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
-      );
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`);
       const data = await response.json();
-
       if (response.ok) {
         setWeather(data);
         setCity(data.name);
         fetchForecast(data.name);
+        setBackground(data.weather[0].main);
         setError("");
-        setBackground(data.weather[0].main); // Update background based on weather
       } else {
         setError("Unable to fetch weather data.");
       }
@@ -55,18 +43,14 @@ function App() {
       setError("Please enter a city name.");
       return;
     }
-
     try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
-      );
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
       const data = await response.json();
-
       if (response.ok) {
         setWeather(data);
         fetchForecast(city);
+        setBackground(data.weather[0].main);
         setError("");
-        setBackground(data.weather[0].main); // Update background based on weather
       } else {
         setError("City not found. Please try again.");
       }
@@ -77,27 +61,19 @@ function App() {
 
   const setBackground = (weatherCondition) => {
     const body = document.body;
-    // Change the body background based on weather condition
-    if (weatherCondition === "Clear") {
-      body.style.background = "linear-gradient(145deg, #f5b7b1, #ffcccb)";
-    } else if (weatherCondition === "Rain") {
-      body.style.background = "linear-gradient(145deg, #3b6e91, #4f9bbf)";
-    } else if (weatherCondition === "Clouds") {
-      body.style.background = "linear-gradient(145deg, #a2b9bc, #b5d6d1)";
-    } else if (weatherCondition === "Snow") {
-      body.style.background = "linear-gradient(145deg, #a6c8e5, #cce1f2)";
-    } else {
-      body.style.background = "linear-gradient(145deg, #ff7e5f, #feb47b)";
-    }
+    const backgrounds = {
+      Clear: "linear-gradient(145deg, #f5b7b1, #ffcccb)",
+      Rain: "linear-gradient(145deg, #3b6e91, #4f9bbf)",
+      Clouds: "linear-gradient(145deg, #a2b9bc, #b5d6d1)",
+      Snow: "linear-gradient(145deg, #a6c8e5, #cce1f2)"
+    };
+    body.style.background = backgrounds[weatherCondition] || "linear-gradient(145deg, #ff7e5f, #feb47b)";
   };
 
   const fetchForecast = async (cityName) => {
     try {
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}&units=metric`
-      );
+      const response = await fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${API_KEY}&units=metric`);
       const data = await response.json();
-
       if (response.ok) {
         const dailyForecast = processForecastData(data.list);
         setForecast(dailyForecast);
@@ -112,7 +88,7 @@ function App() {
   const processForecastData = (list) => {
     const dailyTemps = {};
     list.forEach((item) => {
-      const date = item.dt_txt.split(" ")[0]; // Extract date
+      const date = item.dt_txt.split(" ")[0];
       if (!dailyTemps[date]) {
         dailyTemps[date] = { min: item.main.temp_min, max: item.main.temp_max };
       } else {
@@ -120,14 +96,9 @@ function App() {
         dailyTemps[date].max = Math.max(dailyTemps[date].max, item.main.temp_max);
       }
     });
-
     return Object.entries(dailyTemps)
-      .slice(1, 6) // Get today + next 5 days
-      .map(([date, temps]) => ({
-        date,
-        min: temps.min,
-        max: temps.max,
-      })) || []; // Ensure it always returns an array
+      .slice(1, 6)
+      .map(([date, temps]) => ({ date, min: temps.min, max: temps.max })) || [];
   };
 
   const getRecommendation = () => {
@@ -144,49 +115,30 @@ function App() {
       <div className="weather-container">
         <h1 className="app-title">Weather App</h1>
         <div className="search-container">
-          <input
-            type="text"
-            placeholder="Enter city name"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && fetchWeather()}
-          />
+          <input type="text" placeholder="Enter city name" value={city} onChange={(e) => setCity(e.target.value)} onKeyPress={(e) => e.key === "Enter" && fetchWeather()} />
           <button onClick={fetchWeather}>Search</button>
         </div>
-
         {error && <p className="error">{error}</p>}
-
         <div className="main-content">
           {weather && (
             <div className="weather-info">
-              <h2 className="city-name">
-                {weather.name}, {weather.sys.country}
-              </h2>
+              <h2 className="city-name">{weather.name}, {weather.sys.country}</h2>
               <div className="weather-main">
-                <img
-                  src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
-                  alt={weather.weather[0].description}
-                />
+                <img src={`http://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt={weather.weather[0].description} />
                 <p className="temperature">{Math.round(weather.main.temp)}°C</p>
               </div>
-              <p className="weather-description">
-                {weather.weather[0].description}
-              </p>
+              <p className="weather-description">{weather.weather[0].description}</p>
               <div className="weather-details">
                 <a>Humidity: {weather.main.humidity}% </a> <a>Wind: {weather.wind.speed} m/s</a>
               </div>
             </div>
           )}
-
-          {/* Today's Min and Max Temperature Display */}
           {weather && forecast.length > 0 && (
-  <div className="today-temp">
-    <p>Today's Max Temp: {Math.round(forecast[0].max)}°C</p> {/* Using forecast[0] for today's max */}
-    <p>Today's Min Temp: {Math.round(forecast[0].min)}°C</p> {/* Using forecast[0] for today's min */}
-  </div>
-)}
-
-          {/* Forecast Section */}
+            <div className="today-temp">
+              <p>Today's Max Temp: {Math.round(forecast[0].max)}°C</p>
+              <p>Today's Min Temp: {Math.round(forecast[0].min)}°C</p>
+            </div>
+          )}
           {forecast.length > 0 && (
             <div className="forecast-container">
               <h2>5-Day Forecast</h2>
@@ -202,8 +154,6 @@ function App() {
             </div>
           )}
         </div>
-
-        {/* Recommendation Section */}
         <div className="recommendation">
           <h2>Today's Recommendation</h2>
           <div className="recommendation-card">
